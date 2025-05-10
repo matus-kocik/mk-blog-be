@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags %}
+{% block title %}{{ article.title }} - My Blog{% endblock %}
+
+{% block content %}
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.date_published }}</p>
+
+        <div>
+        {% for block in article.content %}
+            {% if block.block_type == 'text' %}
+                <div>{{ block.value|richtext }}</div>
+            {% elif block.block_type == 'image' %}
+                <div>
+                    <img src="{{ block.value.file.url }}" alt="{{ block.value.title }}">
+                </div>
+            {% elif block.block_type == 'quote' %}
+                <blockquote>
+                    <p>{{ block.value.quote|richtext }}</p>
+                    <footer>- {{ block.value.author|richtext }}</footer>
+                </blockquote>
+            {% elif block.block_type == 'link' %}
+                <a href="{{ block.value }}">{{ block.value }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'articles' %}">Back to articles</a>
+{% endblock %}
