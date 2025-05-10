@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,macos,windows,git,node,visualstudiocode,visualstudio,pycharm,venv,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,macos,windows,git,node,visualstudiocode,visualstudio,pycharm,venv,dotenv
 
+Makefile
+.pre-commit-config.yaml
+
 ### Django ###
 *.log
 *.pot

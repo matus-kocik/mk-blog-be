@@ -1,0 +1,40 @@
+[project]
+name = "mk-blog-be"
+version = "0.1.0"
+description = "A simple blog application"
+authors = [
+    { name = "Matus Kocik", email = "matuskocik@gmail.com" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2.1",
+    "django-modelcluster>=6.4",
+    "django-taggit>=6.1.0",
+    "psycopg[binary]>=3.2.7",
+    "python-decouple>=3.8",
+    "wagtail>=7.0",
+    "wagtail-localize>=1.12.1",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.9",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+fixable = ["I"]
