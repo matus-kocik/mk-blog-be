@@ -1,29 +1,44 @@
 {% extends 'base.html' %}
 {% load wagtailcore_tags %}
-{% block title %}{{ article.title }} - My Blog{% endblock %}
+{% block title %}{{ article.title }} - Matuš Kočik{% endblock %}
 
 {% block content %}
-    <h1>{{ article.title }}</h1>
-    <p>{{ article.date_published }}</p>
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-200 p-4">
+    <div class="container mx-auto max-w-3xl py-12">
 
-        <div>
-        {% for block in article.content %}
-            {% if block.block_type == 'text' %}
-                <div>{{ block.value|richtext }}</div>
-            {% elif block.block_type == 'image' %}
-                <div>
-                    <img src="{{ block.value.file.url }}" alt="{{ block.value.title }}">
-                </div>
-            {% elif block.block_type == 'quote' %}
-                <blockquote>
-                    <p>{{ block.value.quote|richtext }}</p>
-                    <footer>- {{ block.value.author|richtext }}</footer>
-                </blockquote>
-            {% elif block.block_type == 'link' %}
-                <a href="{{ block.value }}">{{ block.value }}</a>
-            {% endif %}
-        {% endfor %}
+        <h1 class="text-4xl font-bold mb-4 text-gray-800 dark:text-gray-200">{{ article.title }}</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ article.date_published|date:"F j, Y" }}</p>
+
+        {% if article.thumbnail %}
+            <img src="{{ article.thumbnail.url }}"
+                    alt="{{ article.title }}"
+                    class="rounded-lg shadow-lg w-full mb-6" />
+        {% endif %}
+
+        <div class="prose dark:prose-invert max-w-none">
+            {% for block in article.content %}
+                {% if block.block_type == 'text' %}
+                    <div>{{ block.value|richtext }}</div>
+                {% elif block.block_type == 'image' %}
+                    <div class="my-6">
+                        <img src="{{ block.value.file.url }}" alt="{{ block.value.title }}" class="rounded-lg shadow-md" />
+                    </div>
+                {% elif block.block_type == 'quote' %}
+                    <blockquote class="border-l-4 border-blue-400 pl-4 italic my-6">
+                        <p>{{ block.value.quote|richtext }}</p>
+                        <footer class="text-sm mt-2">— {{ block.value.author|richtext }}</footer>
+                    </blockquote>
+                {% elif block.block_type == 'link' %}
+                    <p class="my-4">
+                        <a href="{{ block.value }}" class="text-blue-500 underline hover:text-blue-600 transition">{{ block.value }}</a>
+                    </p>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="mt-8">
+            <a href="{% url 'articles' %}" class="text-blue-500 hover:text-blue-600 underline">← Back to all articles</a>
+        </div>
     </div>
-
-    <a href="{% url 'articles' %}">Back to articles</a>
+</div>
 {% endblock %}
