@@ -1,16 +1,30 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Blog{% endblock %}</title>
+    <title>{% block title %}Blog{% endblock %}</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-200">
     <header class="bg-white dark:bg-gray-800 shadow-md py-6 mb-8">
-        <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Welcome to My Blog</h1>
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Matúš Kočik - Blog</h1>
+
+            <!-- Jazykový prepínač -->
+            <form action="{% url 'set_language' %}" method="post" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <select name="language" onchange="this.form.submit()" class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border rounded p-1 text-sm">
+                    <option value="sk" {% if LANGUAGE_CODE == 'sk' %}selected{% endif %}>Slovensky</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+                </select>
+            </form>
         </div>
     </header>
 
@@ -19,7 +33,7 @@
     </main>
 
     <footer class="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
-        <p>&copy; 2025 My Blog</p>
+        <p>&copy; 2025 Blog</p>
     </footer>
 </body>
 </html>

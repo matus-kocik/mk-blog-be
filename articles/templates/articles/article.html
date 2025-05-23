@@ -4,40 +4,54 @@
 
 {% block content %}
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-200 p-4">
-    <div class="container mx-auto max-w-3xl py-12">
+    <div class="container mx-auto max-w-5xl py-12">
+        <div class="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full">
 
-        <h1 class="text-4xl font-bold mb-4 text-gray-800 dark:text-gray-200">{{ article.title }}</h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ article.date_published|date:"F j, Y" }}</p>
+            <h1 class="text-4xl font-bold mb-4 text-gray-800 dark:text-gray-200">{{ article.title }}</h1>
 
-        {% if article.thumbnail %}
-            <img src="{{ article.thumbnail.url }}"
-                    alt="{{ article.title }}"
-                    class="rounded-lg shadow-lg w-full mb-6" />
-        {% endif %}
-
-        <div class="prose dark:prose-invert max-w-none">
-            {% for block in article.content %}
-                {% if block.block_type == 'text' %}
-                    <div>{{ block.value|richtext }}</div>
-                {% elif block.block_type == 'image' %}
-                    <div class="my-6">
-                        <img src="{{ block.value.file.url }}" alt="{{ block.value.title }}" class="rounded-lg shadow-md" />
-                    </div>
-                {% elif block.block_type == 'quote' %}
-                    <blockquote class="border-l-4 border-blue-400 pl-4 italic my-6">
-                        <p>{{ block.value.quote|richtext }}</p>
-                        <footer class="text-sm mt-2">— {{ block.value.author|richtext }}</footer>
-                    </blockquote>
-                {% elif block.block_type == 'link' %}
-                    <p class="my-4">
-                        <a href="{{ block.value }}" class="text-blue-500 underline hover:text-blue-600 transition">{{ block.value }}</a>
-                    </p>
+            <div class="flex items-center gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
+                {% if article.author %}
+                    <span>
+                        By <span class="font-semibold">{{ article.author.full_name|default:article.author.email }}</span>
+                    </span>
                 {% endif %}
-            {% endfor %}
-        </div>
+                <span>· {{ article.date_published|date:"F j, Y" }}</span>
+            </div>
 
-        <div class="mt-8">
-            <a href="{% url 'articles' %}" class="text-blue-500 hover:text-blue-600 underline">← Back to all articles</a>
+            {% if article.thumbnail %}
+                <img src="{{ article.thumbnail.url }}"
+                    alt="{{ article.title }}"
+                    class="rounded-lg shadow-md w-full mb-6" />
+            {% endif %}
+
+            <div class="space-y-6 text-[17px] leading-loose text-gray-800 dark:text-gray-300">
+                {% for block in article.content %}
+                    {% if block.block_type == 'text' %}
+                        <div>{{ block.value|richtext }}</div>
+                    {% elif block.block_type == 'image' %}
+                        <div class="my-6">
+                            <img src="{{ block.value.file.url }}" alt="{{ block.value.title }}" class="rounded-md shadow-md w-full" />
+                        </div>
+                    {% elif block.block_type == 'quote' %}
+                        <blockquote class="border-l-4 border-sky-500 pl-4 italic text-slate-600 dark:text-slate-300">
+                            <p>{{ block.value.quote|richtext }}</p>
+                            <footer class="text-sm mt-2 text-slate-500 dark:text-slate-400">— {{ block.value.author|richtext }}</footer>
+                        </blockquote>
+                    {% elif block.block_type == 'link' %}
+                        <p>
+                            <a href="{{ block.value }}" target="_blank"
+                            class="text-sky-400 hover:text-sky-300 underline transition duration-200">
+                                {{ block.value }}
+                            </a>
+                        </p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="mt-10">
+                <a href="{% url 'articles' %}" class="text-sky-400 hover:text-sky-300 underline transition duration-200">← ← ←</a>
+            </div>
+
         </div>
     </div>
 </div>
